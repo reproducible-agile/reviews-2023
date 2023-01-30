@@ -31,12 +31,12 @@ RUN dpkg --list > dpkg-list.txt && \
   R -e 'capture.output(knitr::kable(as.data.frame(installed.packages())[c("Package", "Version", "License", "Built")], format = "markdown", row.names = FALSE), file = "r-packages.md")'
 
 # --- Metadata ---
-LABEL maintainer="daniel.nuest@uni-muenster.de" \
-  Name="AGILE reproducibility reviews 2022" \
+LABEL maintainer="daniel.nuest@tu-dresden.de" \
+  Name="AGILE reproducibility reviews 2023" \
   org.opencontainers.image.created="2022-04" \
   org.opencontainers.image.authors="Daniel Nüst" \
-  org.opencontainers.image.url="https://github.com/reproducible-agile/reviews-2022" \
-  org.opencontainers.image.documentation="https://github.com/reproducible-agile/reviews-2022" \
+  org.opencontainers.image.url="https://github.com/reproducible-agile/reviews-2023" \
+  org.opencontainers.image.documentation="https://github.com/reproducible-agile/reviews-2023" \
   org.label-schema.description="AGILE reproducibility reviews workflow image (license: Apache 2.0)"
 
 # --- Development instructions ---
