@@ -220,6 +220,8 @@ my_stop_words <- tibble(
     "e.g",
     "i.e",
     "http",
+    "https",
+    "doi.org",
     "ing",
     "pp",
     "figure",
@@ -357,7 +359,8 @@ if(params$private_info) {
 
 ```{r wordstem_data, include=FALSE}
 wordstems <- no_stop_words %>%
-  mutate(wordstem = quanteda::char_wordstem(no_stop_words$word))
+  mutate(wordstem = quanteda::char_wordstem(
+    stringr::str_trim(no_stop_words$word)))
 
 countPapersUsingWordstem <- function(the_word) {
   sapply(the_word, function(w) {
@@ -618,7 +621,7 @@ for (i in 1:nrow(review_files)) {
 ```{r update_camera_ready_file_paths, echo=FALSE, eval=params$private_info}
 # Use this chunk if camera ready files are not managed via EasyChair
 review_files <- review_data %>%
-  filter(type == "Full-paper submission") %>%
+  filter(type == "Full paper") %>%
   dplyr::filter(decision == "ACCEPT") %>%
   dplyr::mutate(file = stringr::str_replace(.$file, pattern = "submissions", replacement = "camera-ready-full-papers")) %>%
   select(id, submission_id, decision, authors, title, file, paper)
@@ -834,7 +837,7 @@ if (params$private_info) {
   # put accepted full papers to private share
   library("googledrive")
   googledrive::drive_auth(use_oob = TRUE)
-  submissions_and_reviews <- "https://drive.google.com/drive/folders/1CvcrOaooQK_2rFKU2v0MGQZmiLfTgk6S"
+  submissions_and_reviews <- "https://drive.google.com/drive/folders/1ghOSXTD6RzgRPd21-sK482pWrsHU1Ors"
   
   
   # upload review data file for manual import (see above)
