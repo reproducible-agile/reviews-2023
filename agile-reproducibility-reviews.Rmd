@@ -41,7 +41,7 @@ library("tabulizer")
 ```
 
 ```{r seed, echo=FALSE}
-set.seed(25) # 25th AGILE!
+set.seed(26) # 26th AGILE!
 ```
 
 ```{r easychair_login, echo=params$private_info}
@@ -74,7 +74,7 @@ cr_path <- here::here("camera-ready-full-papers")
 ```
 
 ```{r conference_id, echo=FALSE}
-conference_id <- "28425498"
+conference_id <- "30327426"
 ```
 
 ### Submission metadata
@@ -91,13 +91,13 @@ submission_table_full <- html_node(submission_html, "#ec\\:table1")
 xml_remove(xml_child(html_node(submission_table_full, "thead")))
 submission_table <- rvest::html_table(x = submission_table_full,
                                       fill = TRUE)
-names(submission_table) <- c("id", "authors", "title", "information", "paper", "assigment", "update", 
-                             #"type",
-                             "time"
+names(submission_table) <- c("id", "authors", "title", "information", "paper", "assigment", "update"
+                             ,"type"
+                             ,"time"
                              ,"decision"
                              )
-warning("manually adding submission type, table does not have it this year")
-submission_table$type <- c(rep("Full-paper submission", times = 26), rep("Short-paper submission", times = nrow(submission_table) - 26))
+#warning("manually adding submission type, table does not have it this year")
+#submission_table$type <- c(rep("Full-paper submission", times = 26), rep("Short-paper submission", times = nrow(submission_table) - 26))
 
 submission_table$id <- str_pad(submission_table$id, width = 3, side = "left", pad = "0")
 submission_table <- submission_table  %>%
@@ -118,8 +118,8 @@ for (i in 1:nrow(submission_table)) {
 }
 
 
-warnings("removing submissions 1 and 2, they are tests this year")
-submission_table <- submission_table[3:nrow(submission_table),]
+#warnings("removing submissions 1 and 2, they are tests this year")
+#submission_table <- submission_table[3:nrow(submission_table),]
 
 submission_table %>%
   group_by(type) %>%
@@ -265,9 +265,12 @@ words_per_doc <- all_words %>%
 type_counts_totals <- submission_table %>%
   group_by(type) %>%
   tally()
-type_counts_totals$type <- c("Full-paper submission"
+type_counts_totals$type <- c(#"Full-paper submission"
                              #, "Poster submission"
-                             , "Short-paper submission"
+                             #, "Short-paper submission"
+                             "Full paper"
+                             , "Poster"
+                             , "Short paper"
                              )
 type_counts_totals <- paste(
   paste(type_counts_totals$type, type_counts_totals$n, sep = ":"),
@@ -493,7 +496,7 @@ There is "accept" and "conditionally accept" (after second review)!
 
 ```{r scrape_accepted, echo=FALSE, eval=params$private_info}
 submission_table %>%
-  filter(type == "Full-paper submission") %>%
+  filter(type == "Full paper") %>%
   group_by(decision) %>%
   summarise(count = n()) %>%
   kable() %>%
@@ -522,7 +525,7 @@ review_data <- left_join(submission_table, dasa_texts %>% select(-type),
 
 accepted_papers <- review_data %>%
     dplyr::filter(decision == "ACCEPT" | decision == "accept?") %>%
-    filter(type == "Full-paper submission") %>%
+    filter(type == "Full paper") %>%
     arrange(id) %>%
     kable() %>%
     kable_styling("striped") %>%
@@ -539,7 +542,7 @@ if(params$private_info) {
 
 ```{r accepted_no_dasa, eval=params$private_info}
 review_data %>%
-  filter(type == "Full-paper submission") %>%
+  filter(type == "Full paper") %>%
   dplyr::filter(decision == "ACCEPT", is.na(`dasa_text`)) %>%
   select(id, title, authors)
 ```
@@ -598,7 +601,7 @@ review_data_csv_file <- file.path(review_files_path, "review_data.csv")
 
 ```{r accepted_fp_files_download_easychair, echo=FALSE, eval=params$private_info}
 review_files <- review_data %>%
-  filter(type == "Full-paper submission") %>%
+  filter(type == "Full paper") %>%
   dplyr::filter(decision == "ACCEPT") %>%
   select(id, submission_id, decision, title, file, paper)
 
