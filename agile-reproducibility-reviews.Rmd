@@ -1,6 +1,6 @@
 ---
 title: "Reproducibility Review AGILE 2023"
-author: "Daniel Nüst"
+author: "Daniel Nüst, Carlos Granell"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 output:
   html_document:
@@ -74,6 +74,7 @@ cr_path <- here::here("camera-ready-full-papers")
 ```
 
 ```{r conference_id, echo=FALSE}
+# get this from the URL when logged into EasyChair, e.g., https://easychair.org/conferences/submissions?a=30327426
 conference_id <- "30327426"
 ```
 
@@ -553,6 +554,7 @@ review_data %>%
 ### Which papers have a link to the reproducibility review
 
 _Does not work reliably yet._
+**_Furthermore, this is not critical anymore because Copernicus now adds a reference to the reproducibility reports._**
 These are the papers where the reproducibility review resulted in at least partially successful reproduction.
 
 ```{r report_links, eval=params$private_info}
@@ -596,7 +598,7 @@ The following snippets help to create a shared Google Spreadsheet to manage the 
 The spreadsheet is privately shared at <https://docs.google.com/spreadsheets/d/16DuExJqtp_fI3FLlOWOVRZQXyOYU1W3FCm9dgLlfRqk/>.
 
 ```{r upload_settings}
-review_data_csv_file <- file.path(review_files_path, "review_data.csv")
+review_data_csv_file <- file.path(review_files_path, paste0("review_data_", lubridate::year(lubridate::now()), ".csv"))
 ```
 
 1. Write paper metadata (ID, decision, title) to a CSV file `r review_data_csv_file`
@@ -869,13 +871,15 @@ if (params$private_info) {
 ### Prepare CSV with titles and DOIs for publisher
 
 ```{r csv_for_publisher}
-googlesheets4::range_read(
-  ss = "https://docs.google.com/spreadsheets/d/16DuExJqtp_fI3FLlOWOVRZQXyOYU1W3FCm9dgLlfRqk",
-  range =  "review_data!A:F"
-  ) %>%
-  select(`ID`, `Title`, `Report DOI`) %>%
-  filter(!is.na(`Report DOI`)) %>%
-  write.csv("AGILE-Reproducibility-Review_report-DOIs.csv", row.names = FALSE)
+if(params$private_info) {
+  googlesheets4::range_read(
+    ss = "https://docs.google.com/spreadsheets/d/16DuExJqtp_fI3FLlOWOVRZQXyOYU1W3FCm9dgLlfRqk",
+    range =  "review_data!A:F"
+    ) %>%
+    select(`ID`, `Title`, `Report DOI`) %>%
+    filter(!is.na(`Report DOI`)) %>%
+    write.csv(paste("AGILE-Reproducibility-Review", lubridate::year(lubridate::now()), "_report-DOIs.csv"), row.names = FALSE)
+}
 ```
 
 `r if(!params$private_info) {"-->"}`
@@ -1005,10 +1009,6 @@ Best regards,
 
 AGILE Reproducibility Committee 2023
 ```
-
-<!--
-TODO: pre-fill the templates with the information and save to the `xxx_authors.html` file, with a ready to click link for the corresponding author email.
--->
 
 ## Colophon
 
