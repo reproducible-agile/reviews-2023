@@ -40,7 +40,7 @@ knitr::knit_hooks$set(chunk = function(x, options) {
 })
 ```
 
-```{r logo, eval=TRUE, echo=FALSE, message=FALSE, fig.align='center', out.width='0.3\\linewidth', fig.pos='H'}
+```{r logo, eval=TRUE, echo=FALSE, message=FALSE, warning=FALSE, fig.align='center', out.width='0.3\\linewidth', fig.pos='H'}
 temp <- tempfile(fileext = ".pdf")
 download.file(url = "https://reproducible-agile.github.io/public/images/reproducible-AGILE-logo-square.pdf", destfile = temp)
 knitr::include_graphics(temp)
