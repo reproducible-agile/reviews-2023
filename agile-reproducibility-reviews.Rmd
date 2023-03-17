@@ -166,6 +166,8 @@ submission_table <- left_join(submission_table,
                                                       pattern = "([:digit:]*)\\.pdf")[,2],
                                      "file" = submission_files),
                               by = "id")
+
+submission_table
 ```
 
 The text is extracted from PDFs and it is processed to create a [tidy](https://www.jstatsoft.org/article/view/v059i10) data structure without [stop words](https://en.wikipedia.org/wiki/Stop_words).
@@ -193,9 +195,16 @@ for (i in 1:nrow(submission_table)) {
 }
 
 pages <- lapply(submission_table$file, function(f) {
-  if(is.na(f))
-    NA
-  else pdftools::pdf_info(f)$pages
+  pages <- NA
+  if(!is.na(f)) {
+    tryCatch({
+      pages <- pdftools::pdf_info(f)$pages
+      },
+      error = function(e) { warning("Could not read pages from ", current$id, " because: ", toString(e))}
+    )  
+  }
+  
+  return(pages)
 })
 
 tidy_texts <- tibble(id = submission_table$id,
