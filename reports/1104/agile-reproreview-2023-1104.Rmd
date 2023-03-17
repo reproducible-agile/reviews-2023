@@ -1,0 +1,324 @@
+---
+title: "Reproducibility review of: Detecting Road Damages in Mobile Mapping Point Clouds using Competitive Reconstruction Networks"
+author: "Daniel Nüst \\orcid{0000-0002-0024-5046}"
+date: "`r format(Sys.time(), '%Y-%m-%d')`"
+output:
+  pdf_document:
+    toc: false
+    latex_engine: xelatex
+papersize: a4
+header-includes:
+  - |
+    % https://tex.stackexchange.com/questions/445563/ieeetran-how-to-include-orcid-in-tex-pdf-with-pdflatex/445583 (works with pdflatex)
+    \usepackage{scalerel}
+    \usepackage{tikz}
+    \usetikzlibrary{svg.path}
+    \definecolor{orcidlogocol}{HTML}{A6CE39}
+    \tikzset{
+      orcidlogo/.pic={
+        \fill[orcidlogocol] svg{M256,128c0,70.7-57.3,128-128,128C57.3,256,0,198.7,0,128C0,57.3,57.3,0,128,0C198.7,0,256,57.3,256,128z};
+        \fill[white] svg{M86.3,186.2H70.9V79.1h15.4v48.4V186.2z}
+                     svg{M108.9,79.1h41.6c39.6,0,57,28.3,57,53.6c0,27.5-21.5,53.6-56.8,53.6h-41.8V79.1z     M124.3,172.4h24.5c34.9,0,42.9-26.5,42.9-39.7c0-21.5-13.7-39.7-43.7-39.7h-23.7V172.4z}
+                     svg{M88.7,56.8c0,5.5-4.5,10.1-10.1,10.1c-5.6,0-10.1-4.6-10.1-10.1c0-5.6,4.5-10.1,10.1-10.1C84.2,46.7,88.7,51.3,88.7,56.8z};
+      }
+    }
+    \newcommand\orcid[1]{\href{https://orcid.org/#1}{\raisebox{0.15 em}{\mbox{\scalerel*{
+    \begin{tikzpicture}[yscale=-1, transform shape]
+    \pic{orcidlogo};
+    \end{tikzpicture}
+    }{|}}}}}
+    \definecolor{agileblue}{RGB}{0,77,155}
+urlcolor: agileblue
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+def.chunk.hook  <- knitr::knit_hooks$get("chunk")
+knitr::knit_hooks$set(chunk = function(x, options) {
+  x <- def.chunk.hook(x, options)
+  ifelse(options$size != "normalsize", paste0("\n \\", options$size,"\n\n", x, "\n\n \\normalsize"), x)
+})
+```
+
+```{r logo, eval=TRUE, echo=FALSE, message=FALSE, warning=FALSE, fig.align='center', out.width='0.3\\linewidth', fig.pos='H'}
+temp <- tempfile(fileext = ".pdf")
+download.file(url = "https://reproducible-agile.github.io/public/images/reproducible-AGILE-logo-square.pdf", destfile = temp)
+knitr::include_graphics(temp)
+```
+
+This report is part of the reproducibility review at the AGILE conference.
+For more information see [https://reproducible-agile.github.io/](https://reproducible-agile.github.io/).
+This document is published on OSF at TODO OSF LINK HERE.
+To cite the report use
+
+> TODO FULL REPORT CITATION HERE
+
+# Reviewed paper
+
+TODO ADD FULL CITATION
+
+# Summary
+
+\clearpage
+
+# Reproducibility reviewer notes
+
+The submission at hand was already deanonimized when this reproducibility review started and points to a public GitHub repository at <https://github.com/Snagnar/CompetitiveReconstructionNetworks> which is also archived at <https://doi.org/10.5281/zenodo.7682032>.
+
+
+```{bash, eval=FALSE}
+git clone https://github.com/Snagnar/CompetitiveReconstructionNetworks.git
+```
+
+The repositories contain a license and a README and seem pretty well set up.
+I continue following the instructions in the README to set up the computational environment.
+This fails on my system (Ubuntu 22.04.2 LTS on AMD Ryzen 5 pro 4650u with Radeon graphics × 12; RENOIR (renoir, LLVM 15.0.3, DRM 3.47, 5.19.0-35-generic); 48GB RAM; SSD), but due to a download error (`SSL: DECRYPTION_FAILED_OR_BAD_RECORD_MAC`), which could be solved by using a different access point.
+The command finishes with:
+
+```{bash, size="tiny", eval=FALSE}
+Successfully installed Click-8.1.3 GitPython-3.1.31 PyYAML-6.0 aiohttp-3.8.4 aiosignal-1.3.1 appdirs-1.4.4 async-timeout-4.0.2 attrs-22.2.0 certifi-2022.12.7 
+charset-normalizer-3.1.0 docker-pycreds-0.4.0 frozenlist-1.3.3 fsspec-2023.3.0 gitdb-4.0.10 idna-3.4 imageio-2.26.0 joblib-1.2.0 lightning-utilities-0.8.0 
+multidict-6.0.4 numpy-1.24.2 nvidia-cublas-cu11-11.10.3.66 nvidia-cuda-nvrtc-cu11-11.7.99 nvidia-cuda-runtime-cu11-11.7.99 nvidia-cudnn-cu11-8.5.0.96 
+packaging-23.0 pathtools-0.1.2 pillow-9.4.0 protobuf-4.22.1 psutil-5.9.4 pytorch_lightning-1.9.4 requests-2.28.2 scikit-learn-1.2.2 scipy-1.10.1 
+sentry-sdk-1.16.0 setproctitle-1.3.2 six-1.16.0 smmap-5.0.0 threadpoolctl-3.1.0 torch-1.13.1 torchmetrics-0.11.4 torchvision-0.14.1 tqdm-4.65.0 
+typing-extensions-4.5.0 urllib3-1.26.15 wandb-0.14.0 yarl-1.8.2
+```
+
+The information regarding computing times is very helpful, as I think I am unlikely to run this with GPU-features on my machine, but it is worth a try... with <https://pytorch.org/> I run the following commands.
+
+```{bash, size="tiny", eval=FALSE}
+pip3 install torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/rocm5.2
+
+amdgpu-install
+rocminfo
+```
+
+## Data download
+
+```{bash, size="tiny", eval=FALSE}
+mkdir datasets
+cd datasets
+mkdir mvtec
+cd mvtec
+
+wget https://www.mydrive.ch/shares/38536/3830184030e49fe74747669442f0f282/download/420938113-1629952094/mvtec_anomaly_detection.tar.xz
+tar -xvf mvtec_anomaly_detection.tar.xz
+```
+
+```{bash, size="tiny", eval=FALSE}
+cd datasets # same as above
+wget -O panorama.zip https://zenodo.org/record/7681876/files/panorama.zip?download=1
+wget -O road_images.zip https://zenodo.org/record/7681876/files/road_images.zip?download=1
+```
+
+```{bash, size="tiny", eval=FALSE}
+$ tree --du -h -L 2 datasets/
+[5.2G]  datasets/
+├── [4.9G]  mvtec
+│   ├── [4.0K]  bottle
+│   ├── [4.0K]  cable
+│   ├── [4.0K]  capsule
+│   ├── [4.0K]  carpet
+│   ├── [4.0K]  grid
+│   ├── [4.0K]  hazelnut
+│   ├── [4.0K]  leather
+│   ├── [ 20K]  license.txt
+│   ├── [4.0K]  metal_nut
+│   ├── [4.9G]  mvtec_anomaly_detection.tar.xz
+│   ├── [4.0K]  pill
+│   ├── [ 881]  readme.txt
+│   ├── [4.0K]  screw
+│   ├── [4.0K]  tile
+│   ├── [4.0K]  toothbrush
+│   ├── [4.0K]  transistor
+│   ├── [4.0K]  wood
+│   └── [4.0K]  zipper
+├── [ 72K]  panorama_anon
+│   ├── [ 56K]  bad_ones
+│   └── [ 12K]  good_ones
+├── [229M]  panorama.zip
+├── [ 12K]  road_images_anon
+│   ├── [4.0K]  bad_ones
+│   └── [4.0K]  good_ones
+└── [ 43M]  road_images.zip
+```
+
+## Run the training
+
+With just a fraction of the suggested steps (`200` instead of `20000`), forcing CPU (because log output in the first tries shows GPU does not work), and setting competitive unit number as suggested in the README.
+The log also suggests to increase `num_workers` but that parameter does not seem to be handled in the script.
+
+```{bash, size="tiny", eval=FALSE}
+python train.py --mode train --training-steps 200 --model crn --dataset MVTec --auto-set-name --dataset-path=datasets/mvtec/cable --num-competitive-units 2 --cpu
+```
+
+PROBLEM: CPUs max out, RAM usage goes up to 38 GB, but no progress after 10 minutes on the progress bar.
+
+```{bash, size="tiny", eval=FALSE}
+2023-03-15 20:13:41 - INFO [dataset.py : __init__() : l. 120]: caching images...
+2023-03-15 20:13:52 - INFO [dataset.py : __init__() : l. 120]: caching images...
+2023-03-15 20:13:58 - INFO [train.py : main() : l. 74]: Dataset created!
+2023-03-15 20:13:58 - INFO [train.py : main() : l. 89]: creating trainer....
+/home/daniel/git/reproducible-agile/reviews-2023/reports/1104/CompetitiveReconstructionNetworks/venv/lib/python3.10/site-packages/pytorch_lightning/trainer/connectors/accelerator_connector.py:589: LightningDeprecationWarning: The Trainer argument `auto_select_gpus` has been deprecated in v1.9.0 and will be removed in v2.0.0. Please use the function `pytorch_lightning.accelerators.find_usable_cuda_devices` instead.
+  rank_zero_deprecation(
+/home/daniel/git/reproducible-agile/reviews-2023/reports/1104/CompetitiveReconstructionNetworks/venv/lib/python3.10/site-packages/pytorch_lightning/trainer/connectors/accelerator_connector.py:751: UserWarning: You passed `Trainer(accelerator='cpu', precision=16)` but native AMP is not supported on CPU. Using `precision='bf16'` instead.
+  rank_zero_warn(
+Using bfloat16 Automatic Mixed Precision (AMP)
+GPU available: False, used: False
+TPU available: False, using: 0 TPU cores
+IPU available: False, using: 0 IPUs
+HPU available: False, using: 0 HPUs
+/home/daniel/git/reproducible-agile/reviews-2023/reports/1104/CompetitiveReconstructionNetworks/venv/lib/python3.10/site-packages/pytorch_lightning/trainer/connectors/logger_connector/logger_connector.py:67: UserWarning: Starting from v1.9.0, `tensorboardX` has been removed as a dependency of the `pytorch_lightning` package, due to potential conflicts with other packages in the ML ecosystem. For this reason, `logger=True` will use `CSVLogger` as the default logger, unless the `tensorboard` or `tensorboardX` packages are found. Please `pip install lightning[extra]` or one of them to enable TensorBoard support by default
+  warning_cache.warn(
+2023-03-15 20:13:58 - INFO [train.py : main() : l. 108]: Trainer created!
+2023-03-15 20:13:58 - INFO [train.py : main() : l. 113]: training model....
+2023-03-15 20:13:58 - INFO [train.py : main() : l. 115]: Training new model...
+2023-03-15 20:13:58 - INFO [crn.py : __init__() : l. 57]: using network depth 7
+/home/daniel/git/reproducible-agile/reviews-2023/reports/1104/CompetitiveReconstructionNetworks/venv/lib/python3.10/site-packages/pytorch_lightning/core/module.py:416: UserWarning: You are trying to `self.log()` but the `self.trainer` reference is not registered on the model yet. This is most likely because the model hasn't been passed to the `Trainer`
+  rank_zero_warn(
+2023-03-15 20:13:59 - INFO [train.py : main() : l. 121]: Model created!
+Initializing distributed: GLOBAL_RANK: 0, MEMBER: 1/12
+Initializing distributed: GLOBAL_RANK: 1, MEMBER: 2/12
+Initializing distributed: GLOBAL_RANK: 2, MEMBER: 3/12
+Initializing distributed: GLOBAL_RANK: 3, MEMBER: 4/12
+Initializing distributed: GLOBAL_RANK: 4, MEMBER: 5/12
+Initializing distributed: GLOBAL_RANK: 5, MEMBER: 6/12
+Initializing distributed: GLOBAL_RANK: 6, MEMBER: 7/12
+Initializing distributed: GLOBAL_RANK: 7, MEMBER: 8/12
+Initializing distributed: GLOBAL_RANK: 8, MEMBER: 9/12
+Initializing distributed: GLOBAL_RANK: 9, MEMBER: 10/12
+Initializing distributed: GLOBAL_RANK: 10, MEMBER: 11/12
+Initializing distributed: GLOBAL_RANK: 11, MEMBER: 12/12
+----------------------------------------------------------------------------------------------------
+distributed_backend=gloo
+All distributed processes registered. Starting with 12 processes
+----------------------------------------------------------------------------------------------------
+
+
+  | Name                         | Type       | Params
+------------------------------------------------------------
+0 | adversarial_loss_function    | L1Loss     | 0     
+1 | reconstruction_loss_function | L1Loss     | 0     
+2 | competitive_units            | ModuleList | 60.5 M
+------------------------------------------------------------
+60.5 M    Trainable params
+0         Non-trainable params
+60.5 M    Total params
+241.943   Total estimated model params size (MB)
+/home/daniel/git/reproducible-agile/reviews-2023/reports/1104/CompetitiveReconstructionNetworks/venv/lib/python3.10/site-packages/pytorch_lightning/trainer/connectors/data_connector.py:217: UserWarning: strategy=ddp_spawn and num_workers=0 may result in data loading bottlenecks. Consider setting num_workers>0 and persistent_workers=True
+  rank_zero_warn(
+/home/daniel/git/reproducible-agile/reviews-2023/reports/1104/CompetitiveReconstructionNetworks/venv/lib/python3.10/site-packages/pytorch_lightning/trainer/trainer.py:1609: PossibleUserWarning: The number of training batches (1) is smaller than the logging interval Trainer(log_every_n_steps=2). Set a lower value for log_every_n_steps if you want to see logs for the training epoch.
+  rank_zero_warn(
+Epoch 0:   0%|                                                                                                                                         | 0/2 [00:00<?, ?it/s^C/home/daniel/git/reproducible-agile/reviews-2023/reports/1104/CompetitiveReconstructionNetworks/venv/lib/python3.10/site-packages/pytorch_lightning/trainer/call.py:48: UserWarning: Detected KeyboardInterrupt, attempting graceful shutdown...
+  rank_zero_warn("Detected KeyboardInterrupt, attempting graceful shutdown...")
+```
+
+## Evaluation
+
+```{bash, size="tiny", eval=FALSE}
+python train.py --mode train --dataset Panorama --dataset-path datasets/panorama --model crn
+```
+
+PROBLEM: IS `datasetst/panorama_anon` THE RIGHT DIRECTORY?
+
+<!--
+To evaluate CRN on the annotated road images, use the following command:
+```bash
+python train.py --mode train --dataset RoadImages --dataset-path datasets/roadimages --model crn
+```
+
+## Run the inference
+
+To run inference, you first need to train a model and store checkpoints using the `--checkpoint-path` flag, e.g. for road images:
+```bash
+python train.py --mode train --dataset RoadImages --dataset-path datasets/roadimages --model crn --checkpoint-path model_checkpoints
+```
+This stores the best CRN state in `model_checkpoints/`.
+
+To calculate anomaly scores for one whole datasets as well as anomaly pictures, use the following command:
+```bash
+python train.py --mode inference --dataset Panorama --dataset-path datasets/panorama_converted --model crn --model-input "model_checkpoints/last.ckpt" --image-output-path inference_images/
+```
+For `--model-input` make sure to give the correct path to the last model checkpoint.
+
+To make inference for different datasets, (RoadImages, MVTec or Panorama) adjust the `--dataset` and `--dataset-path` parameters accordingly.
+
+After inference, you can look at the pictures generated in the `diff` directory to make a qualitative evaluation of the results.
+-->
+
+## Run the hyperparameter tuning
+
+I did not attempt this because of the required account for the _Weights & Biases_ platform, see <https://wandb.ai/>.
+Free accounts are available, but I do not have one.
+
+## Outputs/visualisations
+
+HOW ARE THE COMMANDS MATCHED WITH THE RESPECTIVE FIGURES IN THE PAPER?
+
+Table 1
+
+Table 2
+
+Table 3
+
+Figure 6
+
+Figure 7
+
+<!--
+Overall, the workflow is well documented and readily reproducible, if suitable storage and computational resources are available for the actual dataset.
+Good job!
+-->
+
+## Recommendations
+
+- Pin the computing environment so that the `requirements.txt` contains the actual versions you use(d)
+- You mention the used hardware - please complement this information with the runtimes you experienced for training, inference, etc. so that others can adjust their expectations (or configurations)
+- In your README, please add the to be expected data download sizes
+- It seems like you provide the direct download link for the MVTec AD dataset that is accessible after providing information on  <https://www.mvtec.com/company/research/datasets/mvtec-ad>; I suggest to mention the original URL in the README, just in case the direct download link changes
+- For reproducibility evaluation (and possibly also demonstration), it would be great if you could provide a couple of example commands and corresponding outputs that run on a small subset of the data with CPU only, so that I can run the whole workflow in 10 Minutes and know if my outputs match yours; extra points for making the repo [Binder-ready](https://elifesciences.org/labs/8653a61d/introducing-binder-2-0-share-your-interactive-research-environment) with such a test dataset
+- Please clarify why you do not publish the data stored in W&B - could you not also put that on Zenodo? Isn't there an informational value in that data?
+- Use only paths relative to a project directory that you specific clearly: when I follow the instructions to the letter, I will extract the MVTec dataset to `mvtec/` and only afterwards create `datasets/` next to it, but the first training command expects a directory `datasets/mvtec/..` to exist
+- I see in the code some option to configure a seed - do that!
+
+<!--
+- technical details about reproduction
+- code snippets
+- summary of communication with author
+- figures/screenshots
+- runtime
+- reproduction efforts
+-->
+
+```{bash some_code, eval=FALSE, size="scriptsize"}
+command line code
+```
+
+```{r, echo=FALSE, eval=FALSE, results='hide'}
+# create ZIP of reproduction files and upload to OSF
+library("zip")
+library("here")
+
+zipfile <- here::here("PATH/agile-reproreview-YEAR-NUMBER.zip")
+file.remove(zipfile)
+zip::zipr(zipfile,
+          here::here("2020-018/files to add to the zip, if any"))
+
+library("osfr") # See docs at https://docs.ropensci.org/osfr/
+# OSF_PAT is in .Renviron in parent directory
+# We cannot use osfr to create a new component (with osfr::osf_create_component(x = osfr::osf_retrieve_node("6k5fh"), ...) because that will set the storage location to outside Europe.
+
+# retrieve project
+project <- osfr::osf_retrieve_node("OSF ID")
+
+# upload files
+osfr::osf_upload(x = project,
+                 conflicts = "overwrite",
+                 path = c(list.files(here::here("PATH"),
+                                     pattern = "agile-reproreview-.*(pdf$|Rmd$|zip$)",
+                                     full.names = TRUE),
+                          "COPYRIGHT"
+                          )
+                 )
+```
