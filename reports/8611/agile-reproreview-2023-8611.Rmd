@@ -65,21 +65,39 @@ The paper elaborates on the data collection about extreme heat alerts in Mozambi
 
 # Reproducibility reviewer notes
 
-- materials shared via Github
-- description of the shared materials
-- forked and archived the repo
-- correspondence of the spreadsheets and the figures
+## Data sharing
 
-- multiple rounds of communication, requirements were not clear from the beginning
+The materials that were used for the elaboration of this study were made publicly available under CC BY 4.0 via the following Github repository: [https://github.com/carolinamarghidan/AGILE_MZ_Heat](https://github.com/carolinamarghidan/AGILE_MZ_Heat). The repository consists of a README with links to the data files that are necessary to reproduce the figures of the paper. 
+
+**Dataset 1** is a spreadsheet that compiles and analyses temperature related records from several media sources that can be found online (Twitter, Facebook, Club of Mozambique, Rádio Moçambique, O País, and Televisão de Moçambique). The spreadsheet containes data about: Date of post, Location (district),	Province, Maximum temperature recorded in media, Maximum temperature from weather station,	Impacts recorded (eg. on agriculture), Other information about weather conditions	of the heat wave, Duration in days,	Recommendations	for citizens, Link to online article and Source outlet. There are also three more spreadsheets that were shared upon the reproducibility committee's request for more detailed information about how the figures of the paper were produced: Hwalert_figure2.xlsx (Heat alerts over time - Figure 2), Hwalert_figure1_3.xlsx (Heat alerts per province - Figures 1 and 3) and agile_fig4.xlsx (Maputo and Cabo Delgado weather stations - Figure 4). Based on these spreadsheets, we were able to verify the connection of the figures with the data, but there were not enough instructions to produce the figures on our own based only on the initial dataset that was provided (Dataset 1). The correspondence author included a README to each one of these spreadsheets, which serves more like a short description, rather than a data transformation instruction sheet.
+
+The README also points to two external data portals: 1) The Humaninarian Data Exchange portal for the shapefile with the administrative boundaries of Mozambique ([https://data.humdata.org/dataset/cod-ab-moz](https://data.humdata.org/dataset/cod-ab-moz)), and 2) the National Centers for Environmental Information of the United States for the Weather station recorded Daily maximum temperatures [https://www.ncei.noaa.gov/access/search/datasearch/daily-summaries](https://www.ncei.noaa.gov/access/search/datasearch/daily-summaries). In the first portal we downloaded the file named _moz_adm_20190607b_SHP.zip_ (accessed on March 6th, 2023). In the second portal, after clicking _Explore datasets_ we filled the values "maximum temperature" for _What_ and "Mozambique" for _Where_, as instructed by the README. From the automatically generated results by the portal, we selected the option _Search Data_ of the _Global Historical Climatology Network - Daily (GHCN-Daily), Version 3_ dataset. Then we downloaded the .csv files for the provinces Maputo, Xai-Xai, Panda, Inhambane, Chimoio, Beira, Tete, Quelimane, Nampula, Lichinga, and Pemba, as instructed by the README. These .csv files comprise the so called **Dataset 2**, uploaded also to the corresponding OSF component.
+
+After the reproducibility review, the Github repository was forked and archived under the official Reproducible AGILE Github organization:[https://github.com/reproducible-agile/AGILE_MZ_Heat](https://github.com/reproducible-agile/AGILE_MZ_Heat).
+
+For the reproduction of Figure 2, the correspondence author shared with the reproducibility committee one .mxd file (Map Exchange Document) and one shapefile that were necessary over e-mail.
+
+## Software used
+
+For the reproduction of Figure 2, we used ArcGIS Pro, and for the verification of Figures 1, 3 and 4 we used Microsoft Excel.
+
+## Reproduced figures
+
+
 
 - reproduced figures
 - reproduced table
 
+## Communication with the author
+
+- multiple rounds of communication, requirements were not clear from the beginning
+
+
+## Reproduction efforts
+
 - reproduction efforts: a lot of time, due to wrong (or lack of) instructions
 
-```{bash some_code, eval=FALSE, size="scriptsize"}
-command line code
-```
+
 
 ```{r, echo=FALSE, eval=FALSE, results='hide'}
 # create ZIP of reproduction files and upload to OSF
