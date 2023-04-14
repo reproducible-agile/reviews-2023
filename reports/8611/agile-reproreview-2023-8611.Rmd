@@ -87,7 +87,10 @@ Both applications were running on Windows 10 Education operating computer.
 All the reproduced figures are listed below.
 
 ### Figure 1
-The reproduced figure is quite similar to the one included in the paper, but not exactly the same. There are some differences of aesthetic nature, such as the font and the color scheme, that appears slightly lighter on the reproduced figure. The original figure does not have a title (minor importance) and the explanations of some symbols are missing in the legend on the bottom right corner. Furthermore, some of the plotted data for the heatwave impacts (on agriculture, health and livestock) are positioned differently in the reproduced figure. The rest of the data are in accordance with the original figure. This figure was extracted from the spreadsheet Hwalert_figure2.xlsx.
+The reproduced figure is quite similar to the one included in the paper, but not exactly the same. There are some differences of aesthetic nature, such as the font and the color scheme, that appears slightly lighter on the reproduced figure. The original figure does not have a title (minor importance) and the explanations of some symbols are missing in the legend on the bottom right corner.
+Furthermore, some of the plotted data for the heatwave impacts (on agriculture, health and livestock) are positioned differently in the reproduced figure. 
+The connection of the impact representations to the data of the spreadsheet could not be verified.
+The rest of the data are in accordance with the original figure. This figure was extracted from the spreadsheet Hwalert_figure2.xlsx.
 
 ```{r, echo=FALSE,out.width="100%",fig.cap="Corresponds to Figure 1 of the paper",fig.show='hold',fig.align='center'}
 knitr::include_graphics('./reproduced/figure1.png')
