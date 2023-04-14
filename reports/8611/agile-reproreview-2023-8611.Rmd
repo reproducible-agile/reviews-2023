@@ -59,7 +59,7 @@ Pereira Marghidan, C., van Aalst, M., Blanford, J., Maure, G., and Marrufo, T. (
 
 # Summary
 
-The paper elaborates on the data collection about extreme heat alerts in Mozambique from different media sources and subsequently overlays the collected datasets. After manual data collection, the data were gathered and analysed in spreadsheets and then shared via Github under CC BY 4.0. For this reproducibility review, we attempted to reproduce Figures 1-4 and Table 2. Since the data processing steps were not detailed enough in the README files provided by the corresponding author, we managed to do a verification of the results, rather than a reproduction. For this reason, the reproduction of this paper can be considered only **partially successful**.
+The paper elaborates on the data collection about extreme heat alerts in Mozambique from different media sources and subsequently overlays the collected datasets. After manual data collection, the data were gathered and analysed in spreadsheets and then shared via Github under CC BY 4.0. For this reproducibility review, we attempted to reproduce Figures 1-4 and Table 2. Since the data processing steps were not detailed enough in the README files provided by the corresponding author, in most cases we managed to do a verification of the results, rather than a reproduction. For this reason, the reproduction of this paper can be considered only **partially successful**.
 
 \clearpage
 
@@ -95,7 +95,7 @@ knitr::include_graphics('./reproduced/figure1.png')
 ### Figure 2
 The reproduced figure has a different title and also two additional subtitles for the layers shown in the legend. Both differences are considered of minor importance, since especially the latter could possibly be configured in the GUI of ArcGIS Pro. The two figures make use of different basemaps, which results in obvious (but consistent) differences in the color scheme of the sea and different citation on the bottom right corner of the figure. For the reproduction of this figure we had to connect three different files in ArcGIS Pro.
 
-```{r, echo=FALSE,out.width="100%",fig.cap="Corresponds to Figure 2 of the paper",fig.show='hold',fig.align='center'}
+```{r, echo=FALSE,out.width="60%",fig.cap="Corresponds to Figure 2 of the paper",fig.show='hold',fig.align='center'}
 knitr::include_graphics('./reproduced/figure2.png')
 ```
 
@@ -107,7 +107,8 @@ knitr::include_graphics('./reproduced/figure3.png')
 ```
 
 ### Figure 4
-This figure has two parts, which for the needs of this report we named 4a (upper - concerning Cabo Delgado) and 4b (lower - concerning Maputo city). We were only able to verify figure 4a, as for figure 4b we ran into a "Source not found" error in Microsoft Excel. The reproduced Figure 4a seems to depict the same data as the original, as far as we could judge with the low quality of the image that was embedded in the paper. The differences are minor and include a differently placed legend and different date format in the x-axis.
+This figure has two parts, which for the needs of this report we named 4a (upper - concerning Cabo Delgado) and 4b (lower - concerning Maputo city). We were only able to verify figure 4a, as for figure 4b we ran into a "Source not found" error in Microsoft Excel. The reproduced Figure 4a seems to depict the same data as the original, as far as we could judge with the low quality of the image that was embedded in the paper. The differences are minor and include a differently placed legend and different date format in the x-axis. 
+This figure was extracted from the spreadsheet agile_fig4.xlsx.
 
 ```{r, echo=FALSE,out.width="100%",fig.cap="Corresponds to Figure 4 of the paper",fig.show='hold',fig.align='center'}
 knitr::include_graphics(c('./reproduced/figure4a.png','./reproduced/figure4b.png'))
@@ -118,7 +119,7 @@ knitr::include_graphics(c('./reproduced/figure4a.png','./reproduced/figure4b.png
 Apart from the figures, we reproduced Table 2 of the paper, which gathers information about extreme temperatures in Mozambique from a specific Twitter account (@extremetemps - [https://twitter.com/extremetemps](https://twitter.com/extremetemps)). We used the _Advanced Search_ feature of Twitter ([https://twitter.com/search-advanced](https://twitter.com/search-advanced)), filling in the queries "Mozambique" for _All of these words_, "@extremetemps" for _From these accounts_, "1/1/2016" for _From_ and "1/1/2022" for "To" Dates (excluding replies of the account to tweets of other accounts).
 The steps for this reproduction were assumed based on the methodology described in the paper. The data collection on our side happened on March 2nd, 2023. We were able to verify 6 out of 7 entries of the table and we informed the correspondence author accordingly, who answered that this entry would be eventually be removed from the final version of the manuscript. This should also affect Figure 1, as it plots data from Twitter. The rest of the records are in accordance with the ones reported in the paper with regards to the date and the side notes. We identified a small numerical difference for the temperature record of 03/11/2021 and we could not verify the geographical subregion for the record of 11/07/2020. The Table can be seen below:
 
-```{r, echo=FALSE,out.width="85%",results='asis'}
+```{r, echo=FALSE,out.width="50%",results='asis'}
 tab <- matrix(c("11/07/2020", "", 36.5, "new national July Tmax", 
                 "08/11/2020", "", 45, "",
                 "25/11/2020", "Northern Mozambique", 45, "", 
@@ -133,13 +134,11 @@ knitr::kable(tab, caption="Corresponds to Table 2 of the paper")
 
 ## Communication with the author
 
-- multiple rounds of communication, requirements were not clear from the beginning
-
+To achieve such level of reproducibility for this paper, multiple rounds of communication with the correspondence author were required. Although the Github looked much simpler at the beginning of the reproducibility review, the correspondence author was very cooperative and willing to share the necessary information with the reproducibility committee upon request. This resulted to a considerably improved Github README that will hopefully be helpful to future data reuse and methodology replications. 
 
 ## Reproduction efforts
 
-- reproduction efforts: a lot of time, due to wrong (or lack of) instructions
-
+The reproducibility review took more than four full days (expanded to several weeks), which is much longer than expected. The figure reproduction requirements were not clear from the beginning, the instructions for (re)producing them were lacking or even misleading at times. This resulted to several reproduction efforts that eventually failed. After communicating the failed reproduction results to the correspondence author, they helped us by providing more clues for eventually verifying (and partially reproducing) Figures 1-4 and Table 2. Furthermore, not all datasets were mentioned in the first version of neither the _Data and Software Availability_ section nor the Github README. 
 
 
 ```{r, echo=FALSE, eval=FALSE, results='hide'}
