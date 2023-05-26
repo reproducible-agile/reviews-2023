@@ -51,11 +51,11 @@ For more information see [https://reproducible-agile.github.io/](https://reprodu
 This document is published on OSF at [https://doi.org/10.17605/osf.io/eu8kw](https://doi.org/10.17605/osf.io/eu8kw).
 To cite the report use
 
-Koukouraki, E. (2023, April).  Reproducibility review of: Extreme heat alerts and impacts across Mozambique 2016 - 2022: gathering evidence from media articles. [https://doi.org/10.17605/OSF.IO/EU8KW](https://doi.org/10.17605/OSF.IO/EU8KW)
+Koukouraki, E. (2023, April 14).  Reproducibility review of: Extreme heat alerts and impacts across Mozambique 2016 - 2022: gathering evidence from media articles. [https://doi.org/10.17605/OSF.IO/EU8KW](https://doi.org/10.17605/OSF.IO/EU8KW)
 
 # Reviewed paper
 
-Pereira Marghidan, C., van Aalst, M., Blanford, J., Maure, G., and Marrufo, T. (2023). Extreme heat alerts and impacts across Mozambique 2016 - 2022: gathering evidence from media articles, AGILE Conference
+Pereira Marghidan, C., van Aalst, M., Blanford, J., Maure, G., and Marrufo, T.: Extreme heat alerts and impacts across Mozambique 2016 - 2022: gathering evidence from media articles, AGILE GIScience Ser., 4, 11, [https://doi.org/10.5194/agile-giss-4-11-2023](https://doi.org/10.5194/agile-giss-4-11-2023), 2023
 
 # Summary
 
