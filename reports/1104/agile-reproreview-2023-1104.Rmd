@@ -64,25 +64,64 @@ TODO ADD FULL CITATION
 
 # Reproducibility reviewer notes
 
-The submission at hand was already deanonimized when this reproducibility review started and points to a public GitHub repository at <https://github.com/Snagnar/CompetitiveReconstructionNetworks> which is also archived at <https://doi.org/10.5281/zenodo.7682032>.
-
+The submission at hand was already deanonimized when this reproducibility review started and points to a public GitHub repository at <https://github.com/Snagnar/CompetitiveReconstructionNetworks> which is also archived at <https://doi.org/10.5281/zenodo.7750418> (original version used for first reproduction: <https://doi.org/10.5281/zenodo.7682032>, changes: <https://github.com/Snagnar/CompetitiveReconstructionNetworks/compare/v1.0.0...v1.0.1>).
 
 ```{bash, eval=FALSE}
 git clone https://github.com/Snagnar/CompetitiveReconstructionNetworks.git
 ```
 
 The repositories contain a license and a README and seem pretty well set up.
-I continue following the instructions in the README to set up the computational environment.
-This fails on my system (Ubuntu 22.04.2 LTS on AMD Ryzen 5 pro 4650u with Radeon graphics × 12; RENOIR (renoir, LLVM 15.0.3, DRM 3.47, 5.19.0-35-generic); 48GB RAM; SSD), but due to a download error (`SSL: DECRYPTION_FAILED_OR_BAD_RECORD_MAC`), which could be solved by using a different access point.
-The command finishes with:
+I continue following the instructions in the README to set up the computational environment with pinned dependencies, resulting in the following environment on my machine:
 
 ```{bash, size="tiny", eval=FALSE}
-Successfully installed Click-8.1.3 GitPython-3.1.31 PyYAML-6.0 aiohttp-3.8.4 aiosignal-1.3.1 appdirs-1.4.4 async-timeout-4.0.2 attrs-22.2.0 certifi-2022.12.7 
-charset-normalizer-3.1.0 docker-pycreds-0.4.0 frozenlist-1.3.3 fsspec-2023.3.0 gitdb-4.0.10 idna-3.4 imageio-2.26.0 joblib-1.2.0 lightning-utilities-0.8.0 
-multidict-6.0.4 numpy-1.24.2 nvidia-cublas-cu11-11.10.3.66 nvidia-cuda-nvrtc-cu11-11.7.99 nvidia-cuda-runtime-cu11-11.7.99 nvidia-cudnn-cu11-8.5.0.96 
-packaging-23.0 pathtools-0.1.2 pillow-9.4.0 protobuf-4.22.1 psutil-5.9.4 pytorch_lightning-1.9.4 requests-2.28.2 scikit-learn-1.2.2 scipy-1.10.1 
-sentry-sdk-1.16.0 setproctitle-1.3.2 six-1.16.0 smmap-5.0.0 threadpoolctl-3.1.0 torch-1.13.1 torchmetrics-0.11.4 torchvision-0.14.1 tqdm-4.65.0 
-typing-extensions-4.5.0 urllib3-1.26.15 wandb-0.14.0 yarl-1.8.2
+$ pip freeze
+aiohttp==3.8.4
+aiosignal==1.3.1
+appdirs==1.4.4
+async-timeout==4.0.2
+attrs==22.2.0
+certifi==2022.12.7
+charset-normalizer==3.1.0
+click==8.1.3
+docker-pycreds==0.4.0
+frozenlist==1.3.3
+fsspec==2023.3.0
+gitdb==4.0.10
+GitPython==3.1.31
+idna==3.4
+imageio==2.25.1
+joblib==1.2.0
+lightning-utilities==0.8.0
+multidict==6.0.4
+numpy==1.24.2
+nvidia-cublas-cu11==11.10.3.66
+nvidia-cuda-nvrtc-cu11==11.7.99
+nvidia-cuda-runtime-cu11==11.7.99
+nvidia-cudnn-cu11==8.5.0.96
+packaging==23.0
+pathtools==0.1.2
+Pillow==9.4.0
+protobuf==4.22.1
+psutil==5.9.4
+pytorch-lightning==1.9.2
+PyYAML==6.0
+requests==2.28.2
+scikit-learn==1.2.1
+scipy==1.10.1
+sentry-sdk==1.16.0
+setproctitle==1.3.2
+six==1.16.0
+smmap==5.0.0
+threadpoolctl==3.1.0
+torch==1.13.1
+torchaudio==0.13.1+rocm5.2
+torchmetrics==0.11.4
+torchvision==0.14.1
+tqdm==4.64.1
+typing_extensions==4.5.0
+urllib3==1.26.15
+wandb==0.13.10
+yarl==1.8.2
 ```
 
 The information regarding computing times is very helpful, as I think I am unlikely to run this with GPU-features on my machine, but it is worth a try... with <https://pytorch.org/> I run the following commands.
@@ -112,6 +151,8 @@ wget -O panorama.zip https://zenodo.org/record/7681876/files/panorama.zip?downlo
 wget -O road_images.zip https://zenodo.org/record/7681876/files/road_images.zip?download=1
 ```
 
+After adjusting directory names based on the input to the `--dataset-path` argument in the README, I have the followign file tree:
+
 ```{bash, size="tiny", eval=FALSE}
 $ tree --du -h -L 2 datasets/
 [5.2G]  datasets/
@@ -134,17 +175,22 @@ $ tree --du -h -L 2 datasets/
 │   ├── [4.0K]  transistor
 │   ├── [4.0K]  wood
 │   └── [4.0K]  zipper
-├── [ 72K]  panorama_anon
+├── [ 72K]  panorama
 │   ├── [ 56K]  bad_ones
 │   └── [ 12K]  good_ones
 ├── [229M]  panorama.zip
-├── [ 12K]  road_images_anon
+├── [ 12K]  roadimages
 │   ├── [4.0K]  bad_ones
 │   └── [4.0K]  good_ones
 └── [ 43M]  road_images.zip
 ```
 
-## Run the training
+## Run experiments
+
+After failing to run experiments, the authors provided a reduced version of their pipeline, a "demo mode".
+(The source of this document still contains the full attempted steps.)
+
+<!--
 
 With just a fraction of the suggested steps (`200` instead of `20000`), forcing CPU (because log output in the first tries shows GPU does not work), and setting competitive unit number as suggested in the README.
 The log also suggests to increase `num_workers` but that parameter does not seem to be handled in the script.
@@ -214,13 +260,180 @@ Epoch 0:   0%|                                                                  
   rank_zero_warn("Detected KeyboardInterrupt, attempting graceful shutdown...")
 ```
 
+-->
+
+```{bash, size="tiny", eval=FALSE}
+$ python train.py --mode train --dataset RoadImages --dataset-path datasets/roadimages --model crn --demo --num-workers 4 --cpu --seed 41020
+Global seed set to 41020
+WARNING:root:DEMO MODE ACTIVATED! training with batch size 2 for 100 training steps and image size 32x32. Networks have a maximum depth of 3 and only 3 competitive units are used.
+in partition train files: 95
+True 95
+caching...
+in partition test files: 509
+False 509
+caching...
+INFO:root:Dataset created!
+2023-04-04 12:20:06 - INFO [train.py : main() : l. 88]: Dataset created!
+INFO:root:creating trainer....
+2023-04-04 12:20:06 - INFO [train.py : main() : l. 103]: creating trainer....
+/home/daniel/git/reproducible-agile/reviews-2023/reports/1104/CompetitiveReconstructionNetworks/venv/lib/python3.10/site-packages/pytorch_lightning/trainer/connectors/accelerator_connector.py:585: LightningDeprecationWarning: The Trainer argument `auto_select_gpus` has been deprecated in v1.9.0 and will be removed in v2.0.0. Please use the function `pytorch_lightning.accelerators.find_usable_cuda_devices` instead.
+  rank_zero_deprecation(
+/home/daniel/git/reproducible-agile/reviews-2023/reports/1104/CompetitiveReconstructionNetworks/venv/lib/python3.10/site-packages/pytorch_lightning/trainer/connectors/accelerator_connector.py:744: UserWarning: You passed `Trainer(accelerator='cpu', precision=16)` but native AMP is not supported on CPU. Using `precision='bf16'` instead.
+  rank_zero_warn(
+Using bfloat16 Automatic Mixed Precision (AMP)
+GPU available: False, used: False
+TPU available: False, using: 0 TPU cores
+IPU available: False, using: 0 IPUs
+HPU available: False, using: 0 HPUs
+/home/daniel/git/reproducible-agile/reviews-2023/reports/1104/CompetitiveReconstructionNetworks/venv/lib/python3.10/site-packages/pytorch_lightning/trainer/connectors/logger_connector/logger_connector.py:67: UserWarning: Starting from v1.9.0, `tensorboardX` has been removed as a dependency of the `pytorch_lightning` package, due to potential conflicts with other packages in the ML ecosystem. For this reason, `logger=True` will use `CSVLogger` as the default logger, unless the `tensorboard` or `tensorboardX` packages are found. Please `pip install lightning[extra]` or one of them to enable TensorBoard support by default
+  warning_cache.warn(
+INFO:root:Trainer created!
+2023-04-04 12:20:06 - INFO [train.py : main() : l. 122]: Trainer created!
+INFO:root:training model....
+2023-04-04 12:20:06 - INFO [train.py : main() : l. 127]: training model....
+INFO:root:Training new model...
+2023-04-04 12:20:06 - INFO [train.py : main() : l. 129]: Training new model...
+INFO:root:using network depth 2
+2023-04-04 12:20:06 - INFO [crn.py : __init__() : l. 57]: using network depth 2
+/home/daniel/git/reproducible-agile/reviews-2023/reports/1104/CompetitiveReconstructionNetworks/venv/lib/python3.10/site-packages/pytorch_lightning/core/module.py:416: UserWarning: You are trying to `self.log()` but the `self.trainer` reference is not registered on the model yet. This is most likely because the model hasn't been passed to the `Trainer`
+  rank_zero_warn(
+INFO:root:Model created!
+2023-04-04 12:20:07 - INFO [train.py : main() : l. 135]: Model created!
+Initializing distributed: GLOBAL_RANK: 1, MEMBER: 2/3
+Initializing distributed: GLOBAL_RANK: 0, MEMBER: 1/3
+Initializing distributed: GLOBAL_RANK: 2, MEMBER: 3/3
+----------------------------------------------------------------------------------------------------
+distributed_backend=gloo
+All distributed processes registered. Starting with 3 processes
+----------------------------------------------------------------------------------------------------
+
+
+  | Name                         | Type       | Params
+------------------------------------------------------------
+0 | adversarial_loss_function    | L1Loss     | 0     
+1 | reconstruction_loss_function | L1Loss     | 0     
+2 | competitive_units            | ModuleList | 37.2 M
+------------------------------------------------------------
+37.2 M    Trainable params
+0         Non-trainable params
+37.2 M    Total params
+148.955   Total estimated model params size (MB)
+Epoch 0: 100%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 34/34 [02:46<00:00,  4.88s/it, v_num=3]Exception computing roc:  Only one class present in y_true. ROC AUC score is not defined in that case.█████████████████████████████████████████████████████████████████| 17/17 [00:16<00:00,  1.06it/s]
+Exception computing roc:  Only one class present in y_true. ROC AUC score is not defined in that case.
+terminate called after throwing an instance of 'gloo::EnforceNotMet'
+  what():  [enforce fail at ../third_party/gloo/gloo/transport/tcp/pair.cc:510] op.preamble.length <= op.nbytes. 8 vs 4
+Traceback (most recent call last):
+  File "/home/daniel/git/reproducible-agile/reviews-2023/reports/1104/CompetitiveReconstructionNetworks/train.py", line 215, in <module>
+    main(args)
+  File "/home/daniel/git/reproducible-agile/reviews-2023/reports/1104/CompetitiveReconstructionNetworks/train.py", line 136, in main
+    trainer.fit(model, train_dataloaders=train_loader, val_dataloaders=[val_loader])
+  File "/home/daniel/git/reproducible-agile/reviews-2023/reports/1104/CompetitiveReconstructionNetworks/venv/lib/python3.10/site-packages/pytorch_lightning/trainer/trainer.py", line 608, in fit
+    call._call_and_handle_interrupt(
+  File "/home/daniel/git/reproducible-agile/reviews-2023/reports/1104/CompetitiveReconstructionNetworks/venv/lib/python3.10/site-packages/pytorch_lightning/trainer/call.py", line 36, in _call_and_handle_interrupt
+    return trainer.strategy.launcher.launch(trainer_fn, *args, trainer=trainer, **kwargs)
+  File "/home/daniel/git/reproducible-agile/reviews-2023/reports/1104/CompetitiveReconstructionNetworks/venv/lib/python3.10/site-packages/pytorch_lightning/strategies/launchers/multiprocessing.py", line 113, in launch
+    mp.start_processes(
+  File "/home/daniel/git/reproducible-agile/reviews-2023/reports/1104/CompetitiveReconstructionNetworks/venv/lib/python3.10/site-packages/torch/multiprocessing/spawn.py", line 198, in start_processes
+    while not context.join():
+  File "/home/daniel/git/reproducible-agile/reviews-2023/reports/1104/CompetitiveReconstructionNetworks/venv/lib/python3.10/site-packages/torch/multiprocessing/spawn.py", line 140, in join
+    raise ProcessExitedException(
+torch.multiprocessing.spawn.ProcessExitedException: process 1 terminated with signal SIGABRT
+```
+
+**The above code fails.**
+It is also noteworthy that the logging warning and the actual used values for parameters (batch size, training steps) mismatch.
+
+## Figure 7
+
+I give one of the commands to recreate the figure, with number of competetive units at `12`, a try with only 50 steps:
+
+```{bash, size="tiny", eval=FALSE}
+python train.py --mode train --training-steps 50 --model crn --dataset MVTec --dataset-path=datasets/mvtec/cable --seed 41020 --num-competitive-units 12
+
+Global seed set to 41020
+2023-04-04 13:13:23 - INFO [dataset.py : __init__() : l. 120]: caching images...
+2023-04-04 13:13:32 - INFO [dataset.py : __init__() : l. 120]: caching images...
+2023-04-04 13:13:38 - INFO [train.py : main() : l. 88]: Dataset created!
+2023-04-04 13:13:38 - INFO [train.py : main() : l. 103]: creating trainer....
+/home/daniel/git/reproducible-agile/reviews-2023/reports/1104/CompetitiveReconstructionNetworks/venv/lib/python3.10/site-packages/pytorch_lightning/trainer/connectors/accelerator_connector.py:585: LightningDeprecationWarning: The Trainer argument `auto_select_gpus` has been deprecated in v1.9.0 and will be removed in v2.0.0. Please use the function `pytorch_lightning.accelerators.find_usable_cuda_devices` instead.
+  rank_zero_deprecation(
+/home/daniel/git/reproducible-agile/reviews-2023/reports/1104/CompetitiveReconstructionNetworks/venv/lib/python3.10/site-packages/pytorch_lightning/trainer/connectors/accelerator_connector.py:744: UserWarning: You passed `Trainer(accelerator='cpu', precision=16)` but native AMP is not supported on CPU. Using `precision='bf16'` instead.
+  rank_zero_warn(
+Using bfloat16 Automatic Mixed Precision (AMP)
+GPU available: False, used: False
+TPU available: False, using: 0 TPU cores
+IPU available: False, using: 0 IPUs
+HPU available: False, using: 0 HPUs
+/home/daniel/git/reproducible-agile/reviews-2023/reports/1104/CompetitiveReconstructionNetworks/venv/lib/python3.10/site-packages/pytorch_lightning/trainer/connectors/logger_connector/logger_connector.py:67: UserWarning: Starting from v1.9.0, `tensorboardX` has been removed as a dependency of the `pytorch_lightning` package, due to potential conflicts with other packages in the ML ecosystem. For this reason, `logger=True` will use `CSVLogger` as the default logger, unless the `tensorboard` or `tensorboardX` packages are found. Please `pip install lightning[extra]` or one of them to enable TensorBoard support by default
+  warning_cache.warn(
+2023-04-04 13:13:38 - INFO [train.py : main() : l. 122]: Trainer created!
+2023-04-04 13:13:38 - INFO [train.py : main() : l. 127]: training model....
+2023-04-04 13:13:38 - INFO [train.py : main() : l. 129]: Training new model...
+2023-04-04 13:13:38 - INFO [crn.py : __init__() : l. 57]: using network depth 7
+/home/daniel/git/reproducible-agile/reviews-2023/reports/1104/CompetitiveReconstructionNetworks/venv/lib/python3.10/site-packages/pytorch_lightning/core/module.py:416: UserWarning: You are trying to `self.log()` but the `self.trainer` reference is not registered on the model yet. This is most likely because the model hasn't been passed to the `Trainer`
+  rank_zero_warn(
+2023-04-04 13:13:41 - INFO [train.py : main() : l. 135]: Model created!
+Initializing distributed: GLOBAL_RANK: 0, MEMBER: 1/2
+Initializing distributed: GLOBAL_RANK: 1, MEMBER: 2/2
+----------------------------------------------------------------------------------------------------
+distributed_backend=gloo
+All distributed processes registered. Starting with 2 processes
+----------------------------------------------------------------------------------------------------
+
+
+  | Name                         | Type       | Params
+------------------------------------------------------------
+0 | adversarial_loss_function    | L1Loss     | 0     
+1 | reconstruction_loss_function | L1Loss     | 0     
+2 | competitive_units            | ModuleList | 362 M 
+------------------------------------------------------------
+362 M     Trainable params
+0         Non-trainable params
+362 M     Total params
+1,451.655 Total estimated model params size (MB)
+/home/daniel/git/reproducible-agile/reviews-2023/reports/1104/CompetitiveReconstructionNetworks/venv/lib/python3.10/site-packages/pytorch_lightning/trainer/connectors/data_connector.py:217: UserWarning: strategy=ddp_spawn and num_workers=0 may result in data loading bottlenecks. Consider setting num_workers>0 and persistent_workers=True
+  rank_zero_warn(
+Epoch 7:  33%|██████████████████████████████████████▎                                                                            | 1/3 [37:32<1:15:05, 2252.64s/it, v_num=5, metrics/max_roc_auc=0.570]
+Epoch 7:  67%|████████████████████████████████████████████████████                          | 2/3 [1:03:36<31:48, 1908.39s/it, v_num=5, metrics/max_roc_auc=0.570]Epoch 12:  33%|█████████████████████████▋                                                   | 1/3 [33:01<1:06:03, 1981.94s/it, v_num=5, metrics/max_roc_auc=0.570]`Trainer.fit` stopped: `max_steps=50` reached.                                                                                                                    
+Epoch 12:  33%|█████████████████████████▋                                                   | 1/3 [33:01<1:06:03, 1981.95s/it, v_num=5, metrics/max_roc_auc=0.570]
+```
+
+This commands completes after running over night.
+The README lacks documentation what should be the result.
+I do find a directory `ligning_logs/version_5` that has some files in it (other `version_x` directories next to it are empty, these could be previous faulty runs?):
+
+```{bash, size="tiny", eval=FALSE}
+$ tree lightning_logs/
+lightning_logs/
+├── version_0
+├── version_1
+├── version_2
+├── version_3
+├── version_4
+└── version_5
+    ├── hparams.yaml
+    └── metrics.csv
+```
+
+The contents of the two files are as follows.
+
+`hparams.yaml`
+
+```{r engine='bash', size="tiny", comment=''}
+cat CompetitiveReconstructionNetworks/lightning_logs/version_5/hparams.yaml
+```
+
+`metrics.csv`
+
+```{r engine='bash', size="tiny", comment=''}
+cat CompetitiveReconstructionNetworks/lightning_logs/version_5/metrics.csv
+```
+
 ## Evaluation
 
 ```{bash, size="tiny", eval=FALSE}
 python train.py --mode train --dataset Panorama --dataset-path datasets/panorama --model crn
 ```
-
-PROBLEM: IS `datasetst/panorama_anon` THE RIGHT DIRECTORY?
 
 <!--
 To evaluate CRN on the annotated road images, use the following command:
@@ -254,17 +467,15 @@ Free accounts are available, but I do not have one.
 
 ## Outputs/visualisations
 
-HOW ARE THE COMMANDS MATCHED WITH THE RESPECTIVE FIGURES IN THE PAPER?
+TODO: Table 1 (or at least one command in a reduced fashion)
 
-Table 1
+TODO: Table 2 (or at least one command in a reduced fashion)
 
-Table 2
+TODO: Table 3 (or at least one command in a reduced fashion)
 
-Table 3
+TODO: Figure 6 (or at least one command in a reduced fashion)
 
-Figure 6
-
-Figure 7
+TODO: Figure 7 (or at least one command in a reduced fashion)
 
 <!--
 Overall, the workflow is well documented and readily reproducible, if suitable storage and computational resources are available for the actual dataset.
@@ -273,27 +484,15 @@ Good job!
 
 ## Recommendations
 
-- Pin the computing environment so that the `requirements.txt` contains the actual versions you use(d)
-- You mention the used hardware - please complement this information with the runtimes you experienced for training, inference, etc. so that others can adjust their expectations (or configurations)
-- In your README, please add the to be expected data download sizes
-- It seems like you provide the direct download link for the MVTec AD dataset that is accessible after providing information on  <https://www.mvtec.com/company/research/datasets/mvtec-ad>; I suggest to mention the original URL in the README, just in case the direct download link changes
-- For reproducibility evaluation (and possibly also demonstration), it would be great if you could provide a couple of example commands and corresponding outputs that run on a small subset of the data with CPU only, so that I can run the whole workflow in 10 Minutes and know if my outputs match yours; extra points for making the repo [Binder-ready](https://elifesciences.org/labs/8653a61d/introducing-binder-2-0-share-your-interactive-research-environment) with such a test dataset
-- Please clarify why you do not publish the data stored in W&B - could you not also put that on Zenodo? Isn't there an informational value in that data?
-- Use only paths relative to a project directory that you specific clearly: when I follow the instructions to the letter, I will extract the MVTec dataset to `mvtec/` and only afterwards create `datasets/` next to it, but the first training command expects a directory `datasets/mvtec/..` to exist
-- I see in the code some option to configure a seed - do that!
+The authors made some considerable updates after sharing a first draft or this report, see [comparison on GitHub](https://github.com/Snagnar/CompetitiveReconstructionNetworks/compare/v1.0.0...v1.0.1) (from tag 1.0.0 to 1.0.1), which leads to some ~~fixed recommendations~~.
 
-<!--
-- technical details about reproduction
-- code snippets
-- summary of communication with author
-- figures/screenshots
-- runtime
-- reproduction efforts
--->
-
-```{bash some_code, eval=FALSE, size="scriptsize"}
-command line code
-```
+- ~~Pin the computing environment so that the `requirements.txt` contains the actual versions you use(d)~~
+- ~~You mention the used hardware - please complement this information with the run times you experienced for training, inference, etc. so that others can adjust their expectations (or configurations)~~
+- ~~In your README, please add the to be expected data download sizes~~
+- ~~It seems like you provide the direct download link for the MVTec AD dataset that is accessible after providing information on  <https://www.mvtec.com/company/research/datasets/mvtec-ad>; I suggest to mention the original URL in the README, just in case the direct download link changes~~
+- For reproducibility evaluation (and possibly also demonstration), it would be great if you could provide a couple of ~~example commands and~~ corresponding outputs ~~that run on a small subset of the data with CPU only, so that I can run the whole workflow in 10 Minutes~~ and know if my outputs match yours; extra points for making the repo [Binder-ready](https://elifesciences.org/labs/8653a61d/introducing-binder-2-0-share-your-interactive-research-environment) with such a test dataset
+- ~~Use only paths relative to a project directory that you specific clearly: when I follow the instructions to the letter, I will extract the MVTec dataset to `mvtec/` and only afterwards create `datasets/` next to it, but the first training command expects a directory `datasets/mvtec/..` to exist~~
+- ~~I see in the code some option to configure a seed - do that!~~
 
 ```{r, echo=FALSE, eval=FALSE, results='hide'}
 # create ZIP of reproduction files and upload to OSF
