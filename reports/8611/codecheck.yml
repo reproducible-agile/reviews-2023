@@ -1,0 +1,30 @@
+---
+version: https://codecheck.org.uk/spec/config/1.0/
+
+manifest:
+  - file: NA
+    comment: "The AGILE 2023 Reproducibility Review did not include manifest documentation, see https://github.com/codecheckers/register/issues/49"
+
+paper:
+  title: "Extreme heat alerts and impacts across Mozambique 2016 - 2022: gathering evidence from media articles"
+  authors:
+    - name: Pereira Marghidan
+      ORCID: 
+    - name: 
+      ORCID: 
+  reference: https://doi.org/10.5194/agile-giss-4-11-2023
+
+codechecker:
+  - name: Eftychia Koukouraki
+    ORCID: 0000-0003-0928-1139
+
+report: https://doi.org/10.17605/osf.io/eu8kw
+summary: |
+  The paper elaborates on the data collection about extreme heat alerts in Mozambique from different media sources and subsequently overlays the collected datasets.
+  After manual data collection, the data were gathered and analysed in spreadsheets and then shared via Github under CC BY 4.0.
+  For this reproducibility review, we attempted to reproduce Figures 1-4 and Table 2.
+  Since the data processing steps were not detailed enough in the README files provided by the corresponding author, in most cases we managed to do a verification of the results, rather than a reproduction.
+  For this reason, the reproduction of this paper can be considered only partially successful.
+repository: https://github.com/carolinamarghidan/AGILE_MZ_Heat
+check_time: "2023-06-13 12:00:00"
+certificate: 2023-007
