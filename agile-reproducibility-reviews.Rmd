@@ -92,7 +92,9 @@ submission_table_full <- html_node(submission_html, "#ec\\:table1")
 xml_remove(xml_child(html_node(submission_table_full, "thead")))
 submission_table <- rvest::html_table(x = submission_table_full,
                                       fill = TRUE)
-names(submission_table) <- c("id", "authors", "title", "information", "paper", "assigment", "update"
+names(submission_table) <- c("id", "authors", "title",
+                             "information", "paper", "assigment", "update"
+                             , "NN", "NN"
                              ,"type"
                              ,"time"
                              ,"decision"
