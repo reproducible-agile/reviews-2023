@@ -1,5 +1,5 @@
 ---
-title: "Reproducibility Review AGILE 2023"
+title: "Reproducibility Review AGILE 2024"
 author: "Daniel Nüst, Carlos Granell"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 output:
@@ -12,10 +12,10 @@ params:
 
 ## Introduction
 
-This document includes scripts and text analysis to support the reproducibility review at the [AGILE conference 2023](https://agile-online.org/conference-2023), which is organised by a team from TU Delft, the Netherlands.
+This document includes scripts and text analysis to support the reproducibility review at the [AGILE conference 2024](https://agile-gi.eu/conference-2024), which is organised by the Urban Big Data Centre at University of Glasgow, UK.
 
 Find out more online [about reproducible publications at AGILE](https://doi.org/10.17605/OSF.IO/PHMCE) and the [review process](https://osf.io/eg4qx/), and visit the Reproducible AGILE website: [https://reproducible-agile.github.io/](https://reproducible-agile.github.io/).
-The code of this document is published on GitHub in the repository [reproducible-agile/reviews-2023](https://github.com/reproducible-agile/reviews-2023), where you can inspect the R code in the file `agile-reproducibility-reviews.Rmd` and find instructions for reproducing the workflow.
+The code of this document is published on GitHub in the repository [reproducible-agile/reviews-2024](https://github.com/reproducible-agile/reviews-2024), where you can inspect the R code in the file `agile-reproducibility-reviews.Rmd` and find instructions for reproducing the workflow.
 The [report parameter](https://bookdown.org/yihui/rmarkdown/parameterized-reports.html) `private_info` can be set to `yes` to show information which cannot be shared publicly, such as author names, titles, or excerpts of not accepted submissions, and to upload review files to private shares, which requires authentication.
 
 ```{r load_libraries, message=FALSE, warning=FALSE, include=FALSE}
@@ -41,7 +41,7 @@ library("tabulizer")
 ```
 
 ```{r seed, echo=FALSE}
-set.seed(26) # 26th AGILE!
+set.seed(27) # 27th AGILE!
 ```
 
 ```{r easychair_login, echo=params$private_info}
@@ -898,7 +898,7 @@ if(params$private_info) {
 ### Reproducibility reviewer instructions
 
 1. Familiarise yourself with the [AGILE Reproducibility Review Process](https://docs.google.com/document/d/1JHCQV7GP3YkKwp0Nii3dt3p3Y45hU56Xz2cr-xJVz34/edit#heading=h.oheeg2s92zdm); the following steps are just tl;dr version
-2. Take a look at the [review report template](https://github.com/reproducible-agile/reviews-2023/blob/master/report-template/reproreview-template.Rmd) - even if you're not using it, it gives you guidance
+2. Take a look at the [review report template](https://github.com/reproducible-agile/reviews-2024/blob/master/report-template/reproreview-template.Rmd) - even if you're not using it, it gives you guidance
 3. Go to the [Discoure forum discussion for reproducibility reviewers](https://discourse.agile-online.org/c/repro-review-2023/9) and find your assignments
 4. Conduct your reproducibility review and write the report
     - Don't forget to take a look at the scientific reviews for comments on reproducibility; do _not_ worry about the science or read the full paper, unless it really interests you
@@ -906,7 +906,7 @@ if(params$private_info) {
     - If code is available on GitHub/Lab, please fork the project into the [Reproducible AGILE organisation](https://github.com/reproducible-agile/) respectively the [GitLab subgroup "reviews"](https://gitlab.com/reproducible-agile/reviews) and immediately "archive" the project so that it becomes read-only ([instructions GitHub](https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/about-archiving-repositories), [instructions for GitLab](https://docs.gitlab.com/ee/user/project/settings/#archiving-a-project)); ask Daniel to get the permissions for the organisations
     - If need be, limit the review scope, e.g. reproduce only a specific figure; the reproducibility review should not take you longer (not counting computation time) than a scientific review, and even computation times should not expand longer than a working day
 5. Send the report to the original authors of the paper and add the reproducibility chair in CC, see template below;
-7. Add a new component to the [OSF project for 2023 reproducibility reviews](https://osf.io/2k56f/)
+7. Add a new component to the [OSF project for 2024 reproducibility reviews](https://osf.io/qvr4s/)
     - Use the European storage location, "Frankfurt"
     - Name the component `Reproducibility review of: <FULL PAPER TITLE HERE>`
     - Add link to the OSF project in the master spreadsheet
@@ -931,16 +931,16 @@ if(params$private_info) {
 ```
 Dear <AUTHORS>,
 
-I'm contacting you as the corresponding author of the paper "<TITLE>" submitted to AGILE 2023.
+I'm contacting you as the corresponding author of the paper "<TITLE>" submitted to AGILE 2024.
 
 In my screening of accepted papers I saw that your submission does not include a Data and Software Availability ("DASA") section. Please note that a DASA section with precisely that name is mandatory. Furthermore a successful reproduction of your workflow would be an advertisement for your paper.
 
 Please provide the DASA section by the end of the week so we can start the reproducibility review.
 
 Regards,
-Daniel
+Carlos & Frnak
 
-AGILE Reproducibility Committee Chair 2023
+AGILE Reproducibility Committee Cochair 2024
 ```
 
 #### Reminder DASA
@@ -948,7 +948,7 @@ AGILE Reproducibility Committee Chair 2023
 ```
 Dear <AUTHORS>,
 
-I'm contacting you as the corresponding author of the paper "<TITLE>" submitted to AGILE 2023.
+I'm contacting you as the corresponding author of the paper "<TITLE>" submitted to AGILE 2024.
 I'm the reproducibility reviewer your paper has been assigned to.
 
 The scientific reviewers have noted that your paper does not include a Data and Software Availability ("DASA") section.
@@ -959,7 +959,7 @@ Please provide the DASA section by <DEADLINE> so we can start the reproducibilit
 Regards,
 <NAME>
 
-AGILE Reproducibility Committee 2023
+AGILE Reproducibility Committee 2024
 ```
 
 #### Reminder DASA + synthetic data for proprietary data
@@ -967,18 +967,18 @@ AGILE Reproducibility Committee 2023
 ```
 Dear <AUTHORS>,
 
-I'm contacting you as the corresponding author of the paper "<TITLE>" submitted to AGILE 2023.
+I'm contacting you as the corresponding author of the paper "<TITLE>" submitted to AGILE 2024.
 I'm the reproducibility reviewer your paper has been assigned to.
 
 The scientific reviewers <SELECT: have, have not> note that your paper does not include a dedicated Data and Software Availability ("DASA") section. This section should provide a concise statement if and where data and software is available, or why it is not public. Please note that a DASA section is mandatory, even if data or code is not available.
-Refer to the AGLIE Reproducible Paper Guidelines (https://osf.io/cb7z8/) for detailed information and possible DASA section statements. Please don't hesitate to get in touch with me if you have any questions!
+Refer to the AGILE Reproducible Paper Guidelines (https://osf.io/cb7z8/) for detailed information and possible DASA section statements. Please don't hesitate to get in touch with me if you have any questions!
 
 In your manuscript you state that both code and data cannot be shared due to licensing issues. Is it possible for you to provide a synthetic dataset or subset and the code in order for us to reproduce your methodology?
 
 Kind regards,
 <NAME>
 
-AGILE Reproducibility Committee 2023
+AGILE Reproducibility Committee 2024
 ```
 
 #### Share report draft
@@ -986,7 +986,7 @@ AGILE Reproducibility Committee 2023
 ```
 Dear AUTHORS,
 
-congratulations to the acceptance of your submission "TITLE" as a full paper at the AGILE conference 2023.
+Congratulations to the acceptance of your submission "TITLE" as a full paper at the AGILE conference 2024.
 
 As part of the Reproducible AGILE initative (https://reproducible-agile.github.io/) I attempted to reproduce the results from your paper. Attached to this email you find my report on your results. I welcome your feedback before I publish the report. You can already now add the following sentence to the Data and Software Availability section:
 
@@ -1001,7 +1001,7 @@ Please don't hesitate to get in touch with me and Daniel Nüst (CC'ed), AGILE co
 Best regards,
 <NAME>
 
-AGILE Reproducibility Committee 2023
+AGILE Reproducibility Committee 2024
 ```
 
 #### Report published
@@ -1009,7 +1009,7 @@ AGILE Reproducibility Committee 2023
 ```
 Dear <AUTHORS>,
 
-thank you for your participation in a real open science endeavour!
+Thank you for your participation in a real open science endeavour!
 
 The reproducibility review report on your paper is now published at DOI URL HERE.
 
@@ -1018,7 +1018,7 @@ Please don't hesitate to get in touch with Daniel Nüst (CC'ed), AGILE conferenc
 Best regards,
 <NAME>
 
-AGILE Reproducibility Committee 2023
+AGILE Reproducibility Committee 2024
 ```
 
 ## Colophon
